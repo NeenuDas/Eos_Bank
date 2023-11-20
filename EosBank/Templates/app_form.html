@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 20px;
+  background-color: #f4f4f4;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+input[type="text"],
+input[type="date"],
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type="radio"] {
+  margin-right: 5px;
+}
+
+#subCategoryBranches {
+  display: none;
+}
+
+select {
+  width: calc(100% - 22px); /* Adjust width to accommodate the dropdown arrow */
+}
+
+button {
+  background-color: #4caf50;
+  color: #fff;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+/* Responsive layout */
+@media (max-width: 600px) {
+  .container {
+    width: 90%;
+  }
+}
+
+</style>
+</head>
+<body>
+<form action="{% url 'sucess' %}" method="post">
+    {% csrf_token %}
+  <div class="container">
+    <h1>Application Form</h1>
+    <p><b>Please fill in this form to create an account.</b></p>
+    <hr>
+
+<label ><b>UserName </b></label>
+<input type="text" name="username" size="15"/> <br>
+
+
+
+<label ><b>Birth Date </b></label> &nbsp;&nbsp; &nbsp;&nbsp;
+    <input id="bdate" type="date" name="dob" />
+    <i class="fas fa-calendar-alt"></i>   <br><br><br>
+
+<label><b>Gender </b></label>&nbsp;&nbsp;&nbsp;&nbsp;
+    <input type="radio" name="male"/> Male &nbsp;&nbsp;
+    <input type="radio" name="female"/> Female&nbsp;&nbsp;
+    <input type="radio" name="other"/> Other  <br><br>
+
+
+<label><b>Phone </b></label>
+    <input type="text" name="phone"  value="+91" size="2"/>
+
+
+
+<label for="email"><b>Email</b></label>
+    <input type="text" placeholder="Enter Email" name="email" id="email" required>
+
+<br><br>
+
+<label ><b>Address</b></label>
+<br>
+<textarea cols="80" rows="5" name="address">
+</textarea>
+<br> <br>
+
+    <label for="district">Select District:</label>
+    <select id="district" onchange="showSubCategoryBranches()">
+      <option value="" selected disabled>Select District</option>
+      <option value="district1">District 1</option>
+      <option value="district2">District 2</option>
+      <option value="district3">District 3</option>
+      <option value="district4">District 4</option>
+      <option value="district5">District 5</option>
+    </select>
+
+    <div id="subCategoryBranches">
+      <label for="subCategory">Select Sub-Category Branch:</label>
+      <select id="subCategory">
+        <!-- Sub-category branches will be dynamically added here based on the selected district -->
+      </select>
+    </div>
+<br> <br>
+
+
+<label for="account-type"><b>Account type:</b></label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <select id="account-type" name="account-type">
+        <option value="savings">Savings account</option>
+        <option value="current">Current account</option>
+        <option value="fixed">Fixed deposit</option>
+        <option value="recurring">Recurring deposit</option>
+  </select>
+<br> <br>
+
+  <label for="materials">Materials provided:</label>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="checkbox" id="debit-card" name="debit-card" value="Debit card">
+                            <label for="debit-card">Debit card</label>
+            <input type="checkbox" id="credit-card" name="credit-card" value="Credit card">
+                            <label for="credit-card">Credit card</label>
+             <input type="checkbox" id="cheque-book" name="cheque-book" value="Cheque book">
+                            <label for="cheque-book">Cheque book</label>
+<br> <br>
+
+<center>
+<a href="{% url 'sucess' %}" class="btn btn-warning">Submit</a>
+
+
+
+
+</center>
+<script>
+    function showSubCategoryBranches() {
+      var districtSelect = document.getElementById("district");
+      var subCategoryBranchesDiv = document.getElementById("subCategoryBranches");
+      var subCategorySelect = document.getElementById("subCategory");
+
+      // Clear previous options
+      subCategorySelect.innerHTML = "";
+
+      if (districtSelect.value !== "") {
+        // Replace the following lines with your logic to fetch sub-category branches based on the selected district
+        var subCategoryBranches = getSubCategoryBranches(districtSelect.value);
+
+        // Add default option
+        var defaultOption = document.createElement("option");
+        defaultOption.text = "Select Sub-Category Branch";
+        subCategorySelect.add(defaultOption);
+
+        // Add sub-category branches to the dropdown
+        subCategoryBranches.forEach(function(branch) {
+          var option = document.createElement("option");
+          option.value = branch;
+          option.text = branch;
+          subCategorySelect.add(option);
+        });
+
+        // Show the sub-category branches dropdown
+        subCategoryBranchesDiv.style.display = "block";
+      } else {
+        // Hide the sub-category branches dropdown if no district is selected
+        subCategoryBranchesDiv.style.display = "none";
+      }
+    }
+
+    function getSubCategoryBranches(district) {
+      // Replace this with your logic to fetch sub-category branches based on the selected district
+      // This is a placeholder function
+      switch (district) {
+        case "district1":
+          return ["Branch A", "Branch B", "Branch C"];
+        case "district2":
+          return ["Branch D", "Branch E", "Branch F"];
+        case "district3":
+          return ["Branch G", "Branch H", "Branch I"];
+        case "district4":
+          return ["Branch J", "Branch K", "Branch L"];
+        case "district5":
+          return ["Branch M", "Branch N", "Branch O"];
+        default:
+          return [];
+      }
+    }
+  </script>
+ </form>
+
+</body>
+</html>
